@@ -6,7 +6,7 @@ var api = module.exports = function (transport) {
 		transport = [transport || 'console'];
 	}
 	// TODO: Support multiple transports.
-	return require('./lib/' + transport[0]);
+	return require('./lib/' + transport[0])();
 }
 
 /**

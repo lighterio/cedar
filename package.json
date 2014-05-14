@@ -12,7 +12,7 @@
     "icons",
     "transport"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "chip.js",
   "homepage": "http://github.com/zerious/chip",
   "repository": "http://github.com/zerious/chip.git",

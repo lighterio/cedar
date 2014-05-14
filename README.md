@@ -17,9 +17,9 @@ Add `chip` to your dependencies.
 npm install --save chip
 ```
 
-Create a console logger, and use it.
+Create a stdout logger, and use it.
 ```javascript
-var log = require('chip')('console');
+var log = require('chip')();
 
 log('Use a string.');
 
@@ -27,15 +27,68 @@ log(['Or'], ['an'], ['array']);
 
 log({or: 'json, obviously'});
 
-log.debug('This will be preceded by a grey arrow, as above.');
-log.trace('This will be preceded by a magenta diamond thingy.');
-log.log('This will be preceded by a cyan plus.');
+log.trace('This will be preceded by a cyan plus.');
+log.debug('This will be preceded by a magenta diamond thingy.');
+log.log('This will be preceded by a grey arrow, as above.');
 log.info('This will be preceded by a green check mark.');
 log.warn('This will be preceded by a thick yellow asterisk.');
 log.error('This will be preceded by a thick red X.');
 ```
 
+## Default logger customization
+
+#### log.setFormat
+
+Customize the message format.
+```javascript
+var log = require('chip')();
+log.setFormat(function (message, prefix) {
+  return prefix + message + '!';
+});
+```
+
+#### log.setLevel
+
+Change the level of log that is shown (default: `log`).
+```javascript
+var log = require('chip')();
+log.setLogLevel('trace');
+```
+
+Setting to a level from this list will enable logs of that level and all
+of the levels after it: `trace`, `debug`, `log`, `info`, `warn`, `error`.
+Setting the level to `nothing` will stop all logs.
+
+#### log.setPrefixes
+
+Customize prefixes for the console log messages.
+```javascript
+require('colors');
+
+var log = require('chip')();
+log.setPrefixes({
+  trace: 'TRACE '.cyan,
+  debug: 'DEBUG '.magenta,
+  log: 'LOG   '.grey,
+  info: 'INFO  '.green,
+  warn: 'WARN  '.yellow,
+  error: 'ERROR '.red
+});
+
+// You can also get the prefixes:
+var prefixes = log.getPrefixes();
+```
+
+#### log.setJsonSpace
+
+Customize the spacing that JSON.stringify uses.
+```javascript
+var log = require('chip')();
+log.setJsonSpace('  ');
+```
+The default is two spaces.
+
 
 ## Roadmap
 
-Chip will soon support more transports than just "console". Hey, it's a start.
+Chip will soon support more transports than `stdout`. Hey, it's a start.
