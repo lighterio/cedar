@@ -3,6 +3,21 @@ var chip = require('../chip');
 
 require('zeriousify').test();
 
+describe('Blackhole', function () {
+
+	it('should have all of the expected logging functions', function () {
+		var log = chip('blackhole');
+		log('log');
+		log.trace('trace');
+		log.debug('debug');
+		log.log('log');
+		log.info('info');
+		log.warn('warn');
+		log.error('error');
+	});
+
+});
+
 describe('Console', function () {
 
 	it('should return a console logger', function () {
