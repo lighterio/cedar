@@ -27,8 +27,8 @@ log(['Or'], ['an'], ['array']);
 
 log({or: 'json, obviously'});
 
-log.trace('This will be preceded by a cyan plus.');
 log.debug('This will be preceded by a magenta diamond thingy.');
+log.trace('This will be preceded by a cyan plus.');
 log.log('This will be preceded by a grey arrow, as above.');
 log.info('This will be preceded by a green check mark.');
 log.warn('This will be preceded by a thick yellow asterisk.');
@@ -37,17 +37,20 @@ log.error('This will be preceded by a thick red X.');
 
 ## Default logger customization
 
-#### log.setFormat
+#### log.setFormat(function callback[, string type])
 
 Customize the message format.
 ```javascript
 var log = require('chip')();
-log.setFormat(function (message, prefix) {
+log.setFormat(function (message, prefix, type) {
   return prefix + message + '!';
 });
 ```
 
-#### log.setLevel
+If you specify the optional `type` parameter, it will only change the formatter
+for that type.
+
+#### log.setLevel(string level)
 
 Change the level of log that is shown (default: `log`).
 ```javascript
@@ -56,10 +59,10 @@ log.setLogLevel('trace');
 ```
 
 Setting to a level from this list will enable logs of that level and all
-of the levels after it: `trace`, `debug`, `log`, `info`, `warn`, `error`.
+of the levels after it: `debug`, `trace`, `log`, `info`, `warn`, `error`.
 Setting the level to `nothing` will stop all logs.
 
-#### log.setPrefixes
+#### log.setPrefixes(object prefixes)
 
 Customize prefixes for the console log messages.
 ```javascript
@@ -67,8 +70,8 @@ require('colors');
 
 var log = require('chip')();
 log.setPrefixes({
-  trace: 'TRACE '.cyan,
   debug: 'DEBUG '.magenta,
+  trace: 'TRACE '.cyan,
   log: 'LOG   '.grey,
   info: 'INFO  '.green,
   warn: 'WARN  '.yellow,
@@ -79,7 +82,7 @@ log.setPrefixes({
 var prefixes = log.getPrefixes();
 ```
 
-#### log.setJsonSpace
+#### log.setJsonSpace(string whitespace)
 
 Customize the spacing that JSON.stringify uses.
 ```javascript

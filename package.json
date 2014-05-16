@@ -12,7 +12,7 @@
     "icons",
     "transport"
   ],
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "chip.js",
   "homepage": "http://github.com/zerious/chip",
   "repository": "http://github.com/zerious/chip.git",
@@ -45,9 +45,7 @@
     "report": "open coverage/lcov-report/index.html",
     "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
-  "dependencies": {
-    "colors": "0.6.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "zeriousify": "0.1.3",
     "assert-plus": "0.1.5",
