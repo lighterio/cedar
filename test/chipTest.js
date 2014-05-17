@@ -4,6 +4,22 @@ var write = process.stdout.write;
 
 require('zeriousify').test();
 
+describe('Base', function () {
+
+	it('should have all of the expected logging functions', function () {
+		var log = chip('base');
+		var output = '';
+		process.stdout.write = function (value) {
+			output += value;
+		};
+		log('1');
+		log.error('2');
+		assert.equal(output, 'LOG: 1\nERROR: 2\n');
+		process.stdout.write = write;
+	});
+
+});
+
 describe('Blackhole', function () {
 
 	it('should have all of the expected logging functions', function () {
@@ -29,12 +45,14 @@ describe('Console', function () {
 		log = chip(['console']);
 		assert.equal(log.type, 'console');
 	});
+
 	it('should support getPrefixes and setPrefixes', function () {
 		var log = chip();
 		log.setPrefixes(0);
 		var prefixes = log.getPrefixes();
 		assert.equal(prefixes, 0);
 	});
+
 	it('should have all of the expected logging functions', function () {
 		var log = chip();
 		var prefixes = log.getPrefixes();
@@ -88,6 +106,7 @@ describe('Console', function () {
 	it('should support log levels', function () {
 		var log = chip();
 		var output = null;
+
 		process.stdout.write = function (value) {
 			output = value;
 		};
@@ -145,12 +164,11 @@ describe('Console', function () {
 		process.stdout.write = function (value) {
 			output += value;
 		};
-		log.setPrefixes({error: 'E', log: 'L'});
-		log.setFormat(function (message, prefix, type) {
-			return prefix + message + type;
+		log.setFormat(function (message, type) {
+			return 'L'+ message + type;
 		});
-		log.setFormat(function (message, prefix, type) {
-			return prefix + message + type + '!';
+		log.setFormat(function (message, type) {
+			return 'E' + message + type + '!';
 		}, 'error');
 		log(1);
 		log.error(2);
@@ -165,12 +183,13 @@ describe('Console', function () {
 		process.stdout.write = function (value) {
 			output += value;
 		};
-		var err = 'Error: blah\n' +
-			'  at blah (' + process.cwd() + '/blah.js:1:2)\n' +
-			'  at blahblah (' + process.cwd() + '/blah.js:15:2)\n' +
-			'  at TCP.onread (net.js:527:27)'.length;
+		try {
+			process.omgWtfBbq();
+		}
+		catch (e) {
+			log.error(e);
+		}
 
-		log.error(err);
 		assert.equal(output.indexOf(process.cwd()), -1);
 
 		process.stdout.write = write;
