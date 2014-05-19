@@ -1,13 +1,14 @@
 var assert = require('assert-plus');
-var chip = require('../chip');
+var cedar = require('../cedar');
 var write = process.stdout.write;
+var cwd = process.cwd();
 
 require('zeriousify').test();
 
 describe('Base', function () {
 
 	it('should have all of the expected logging functions', function () {
-		var log = chip('base');
+		var log = cedar('base');
 		var output = '';
 		process.stdout.write = function (value) {
 			output += value;
@@ -23,7 +24,7 @@ describe('Base', function () {
 describe('Blackhole', function () {
 
 	it('should have all of the expected logging functions', function () {
-		var log = chip('blackhole');
+		var log = cedar('blackhole');
 		log('log');
 		log.trace('trace');
 		log.debug('debug');
@@ -38,23 +39,23 @@ describe('Blackhole', function () {
 describe('Console', function () {
 
 	it('should return a console logger', function () {
-		var log = chip();
+		var log = cedar();
 		assert.equal(log.type, 'console');
-		log = chip('console');
+		log = cedar('console');
 		assert.equal(log.type, 'console');
-		log = chip(['console']);
+		log = cedar(['console']);
 		assert.equal(log.type, 'console');
 	});
 
 	it('should support getPrefixes and setPrefixes', function () {
-		var log = chip();
+		var log = cedar();
 		log.setPrefixes(0);
 		var prefixes = log.getPrefixes();
 		assert.equal(prefixes, 0);
 	});
 
 	it('should have all of the expected logging functions', function () {
-		var log = chip();
+		var log = cedar();
 		var prefixes = log.getPrefixes();
 		for (var key in prefixes) {
 			prefixes[key] = '      ' + prefixes[key];
@@ -80,7 +81,7 @@ describe('Console', function () {
 	});
 
 	it('should support jsonSpace', function () {
-		var log = chip();
+		var log = cedar();
 		var output = null;
 		process.stdout.write = function (value) {
 			output = value;
@@ -104,7 +105,7 @@ describe('Console', function () {
 	});
 
 	it('should support log levels', function () {
-		var log = chip();
+		var log = cedar();
 		var output = null;
 
 		process.stdout.write = function (value) {
@@ -159,7 +160,7 @@ describe('Console', function () {
 	});
 
 	it('should support custom formats', function () {
-		var log = chip();
+		var log = cedar();
 		var output = '';
 		process.stdout.write = function (value) {
 			output += value;
@@ -178,7 +179,7 @@ describe('Console', function () {
 	});
 
 	it('should format stack traces', function () {
-		var log = chip();
+		var log = cedar();
 		var output = '';
 		process.stdout.write = function (value) {
 			output += value;
@@ -189,9 +190,27 @@ describe('Console', function () {
 		catch (e) {
 			log.error(e);
 		}
+		assert.equal(output.indexOf(cwd), -1);
+		process.stdout.write = write;
+	});
 
-		assert.equal(output.indexOf(process.cwd()), -1);
-
+	it('should work when the file is missing', function () {
+		var log = cedar();
+		var output = '';
+		process.stdout.write = function (value) {
+			output += value;
+		};
+		log.before = 12;
+		var message = 'Error in X';
+		for (var i = 0; i < 15; i++) {
+			message += '\n    at X (' + cwd + '/x.js:1:2)';
+		}
+		log.warn(message);
+		var message = 'Error in X';
+		for (var i = 0; i < 15; i++) {
+			message += '\n    at X (' + cwd + '/cedar.js:1:2)';
+		}
+		log.warn(message);
 		process.stdout.write = write;
 	});
 });

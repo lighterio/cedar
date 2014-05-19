@@ -1,7 +1,7 @@
 /**
  * Get a logger with one or more transports.
  */
-var chip = module.exports = function (transport) {
+var cedar = module.exports = function (transport) {
 	if (!(transport instanceof Array)) {
 		transport = [transport || 'console'];
 	}
@@ -12,4 +12,4 @@ var chip = module.exports = function (transport) {
 /**
  * Expose the version to module users.
  */
-chip.version = require('./package.json').version;
+cedar.version = require('./package.json').version;
