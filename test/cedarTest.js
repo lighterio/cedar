@@ -26,6 +26,12 @@ describe('Base', function () {
 		var o = {};
 		o.o = o;
 		assert.equal(log.stringify(o), '{"o":"[Circular]"}');
+		assert.equal(log.stringify(function (){}), 'function (){}');
+		assert.equal(log.stringify(1), '1');
+		assert.equal(log.stringify(true), 'true');
+		assert.equal(log.stringify(null), 'null');
+		assert.equal(log.stringify(o.undef), 'undefined');
+		assert.equal(log.stringify('hello'), 'hello');
 	});
 
 });
