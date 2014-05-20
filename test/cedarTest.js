@@ -19,6 +19,15 @@ describe('Base', function () {
 		process.stdout.write = write;
 	});
 
+	it('should stringify', function () {
+		var log = cedar('base');
+		log.setJsonSpace('');
+		assert.equal(log.stringify({}), '{}');
+		var o = {};
+		o.o = o;
+		assert.equal(log.stringify(o), '{"o":"[Circular]"}');
+	});
+
 });
 
 describe('Blackhole', function () {
@@ -99,7 +108,7 @@ describe('Console', function () {
 
 		log.setJsonSpace(' ');
 		log({ok: true});
-		assert.equal(output, '{\n "ok": true\n}\n');
+		assert.equal(output, '{\n  "ok": true\n }\n');
 
 		process.stdout.write = write;
 	});
