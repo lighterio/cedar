@@ -25,7 +25,8 @@ describe('Base', function () {
 		assert.equal(log.stringify({}), '{}');
 		var o = {};
 		o.o = o;
-		assert.equal(log.stringify(o), '{"o":"[Circular]"}');
+		o.def = o.undef;
+		assert.equal(log.stringify(o), '{"o":"[Circular]","def":"undefined"}');
 		assert.equal(log.stringify(function (){}), 'function (){}');
 		assert.equal(log.stringify(1), '1');
 		assert.equal(log.stringify(true), 'true');
