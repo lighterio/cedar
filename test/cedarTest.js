@@ -40,39 +40,39 @@ describe('Base', function () {
 
 describe('Blackhole', function () {
 
-	it('should have all of the expected logging functions', function () {
-		var log = cedar('blackhole');
-		log('log');
-		log.trace('trace');
-		log.debug('debug');
-		log.log('log');
-		log.info('info');
-		log.warn('warn');
-		log.error('error');
-	});
+  it('should have all of the expected logging functions', function () {
+    var log = cedar('blackhole');
+    log('log');
+    log.trace('trace');
+    log.debug('debug');
+    log.log('log');
+    log.info('info');
+    log.warn('warn');
+    log.error('error');
+  });
 
 });
 
 describe('File', function () {
 
-	it('should log to file', function (done) {
-		var log = cedar('file');
-		log('log');
-		log({});
-		log(0);
-		log(null);
-		log([].undef);
-		setTimeout(function () {
-			var log = cedar('file');
-			log('exists');
-			log = cedar('file', {path: 'logs/deleteMe/deleteMe.log'})
-			setTimeout(function () {
-				fs.unlink('logs/cedar.log');
-				fs.unlink('logs/deleteMe/deleteMe.log');
-				done();
-			}, 100);
-		}, 100);
-	});
+  it('should log to file', function (done) {
+    var log = cedar('file');
+    log('log');
+    log({});
+    log(0);
+    log(null);
+    log([].undef);
+    setTimeout(function () {
+      var log = cedar('file');
+      log('exists');
+      log = cedar('file', {path: 'logs/deleteMe/deleteMe.log'})
+      setTimeout(function () {
+        fs.unlink('logs/cedar.log');
+        fs.unlink('logs/deleteMe/deleteMe.log');
+        done();
+      }, 100);
+    }, 100);
+  });
 
 });
 
