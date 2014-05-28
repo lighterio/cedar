@@ -1,12 +1,11 @@
 /**
  * Get a logger with one or more transports.
  */
-var cedar = module.exports = function (transport) {
-	if (!(transport instanceof Array)) {
-		transport = [transport || 'console'];
-	}
-	// TODO: Support multiple transports.
-  return require('./lib/' + transport[0])();
+var cedar = module.exports = function (transport, options) {
+  if (!(transport instanceof Array)) {
+    transport = [transport || 'console'];
+  }
+  return require('./lib/' + transport[0])(options);
 }
 
 /**

@@ -12,7 +12,7 @@
     "icons",
     "transport"
   ],
-  "version": "0.0.10",
+  "version": "0.0.11",
   "main": "cedar.js",
   "homepage": "http://github.com/zerious/cedar",
   "repository": "http://github.com/zerious/cedar.git",
