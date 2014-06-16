@@ -2,8 +2,6 @@ var assert = require('assert-plus');
 var cedar = require('../cedar');
 var write = process.stdout.write;
 
-require('zeriousify').test();
-
 describe('Base', function () {
 
   it('should have all of the expected logging functions', function () {
@@ -24,7 +22,8 @@ describe('Base', function () {
     assert.equal(log.stringify({}), '{}');
     var o = {};
     o.o = o;
-    assert.equal(log.stringify(o), '{"o":"[Circular]"}');
+    o.def = o.undef;
+    assert.equal(log.stringify(o), '{"o":"[Circular]","def":"undefined"}');
     assert.equal(log.stringify(function (){}), 'function (){}');
     assert.equal(log.stringify(1), '1');
     assert.equal(log.stringify(true), 'true');

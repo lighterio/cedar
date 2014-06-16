@@ -180,4 +180,23 @@ describe('Console', function () {
     log.warn(message);
     process.stdout.write = write;
   });
+
+  it('should move bracketed names to the end', function () {
+    var log = cedar();
+    var output = '';
+    var space = '                                             ';
+    process.stdout.write = function (value) {
+      output += value;
+    };
+    function pretty(text) {
+      text = text.replace(/</g, '\u001b[90m').replace(/>/g, '\u001b[39m');
+      return text.replace(/@/g, '\u279C');
+    }
+    log('[Ok] Blah');
+    assert.equal(output, pretty('<@ >Blah' + Array(46).join(' ') + '<Ok>\n'));
+    output = '';
+    log(pretty('[Ok] Hi <(1)>'));
+    assert.equal(output, pretty('<@ >Hi <(1)>' + Array(44).join(' ') + '<Ok>\n'));
+    process.stdout.write = write;
+  });
 });

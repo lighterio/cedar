@@ -35,7 +35,7 @@ log.warn('This will be preceded by a thick yellow asterisk.');
 log.error('This will be preceded by a thick red X.');
 ```
 
-## Default logger customization
+## Logger customization
 
 #### log.setFormat(function callback[, string type])
 
@@ -92,6 +92,35 @@ log.setJsonSpace('  ');
 The default is two spaces.
 
 
-## Roadmap
+## Transports
 
-Cedar will soon support file transports and more.
+Cedar currently supports "console" and "file" transports.
+
+### Console
+
+The console logger writes to `process.stdout` with pretty colors.
+
+Console is the default transport, so the following are equivalent:
+```javascript
+logger = require('cedar')();
+logger = require('cedar')('console');
+```
+
+### Base
+
+The base logger writes to a stream.
+```javascript
+var fs = require('fs');
+var ws = fs.createWriteStream('my.log');
+var logger = require('cedar')('base', {stream: ws});
+logger.log('Write this string to a file');
+```
+
+### File
+
+The file logger writes JSON arrays to a file.
+The default file path is `logs/cedar.log`.
+```javascript
+var logger = require('cedar')('file', {path: 'logs/cedar.log'});
+logger.log('Write this string to a file');
+```
