@@ -62,11 +62,11 @@ describe('Console', function () {
 
     log.setJsonSpace(null);
     log({ok: true});
-    assert.equal(output, '{"ok":true}\n');
+    assert.equal(output, '{ok:true}\n');
 
     log.setJsonSpace(' ');
     log({ok: true});
-    assert.equal(output, '{\n  "ok": true\n }\n');
+    assert.equal(output, '{ok: true}\n');
 
     process.stdout.write = write;
   });
