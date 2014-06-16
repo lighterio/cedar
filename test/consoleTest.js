@@ -5,8 +5,10 @@ var cwd = process.cwd();
 
 describe('Console', function () {
 
+  // Methods which don't set custom properties can use this default logger.
+  var log = cedar();
+
   it('should return a console logger', function () {
-    var log = cedar();
     assert.equal(log.type, 'console');
     log = cedar('console');
     assert.equal(log.type, 'console');
@@ -44,30 +46,6 @@ describe('Console', function () {
     log.info({});
     log.warn({});
     log.error({});
-    process.stdout.write = write;
-  });
-
-  it('should support jsonSpace', function () {
-    var log = cedar();
-    var output = null;
-    process.stdout.write = function (value) {
-      output = value;
-    };
-
-    log.setPrefixes({log: ''});
-
-    log.setFormat(function (message) {
-      return message;
-    });
-
-    log.setJsonSpace(null);
-    log({ok: true});
-    assert.equal(output, '{ok:true}\n');
-
-    log.setJsonSpace(' ');
-    log({ok: true});
-    assert.equal(output, '{ok: true}\n');
-
     process.stdout.write = write;
   });
 
@@ -146,7 +124,6 @@ describe('Console', function () {
   });
 
   it('should format stack traces', function () {
-    var log = cedar();
     var output = '';
     process.stdout.write = function (value) {
       output += value;
@@ -161,7 +138,7 @@ describe('Console', function () {
     process.stdout.write = write;
   });
 
-  it('should work when the file is missing', function () {
+  it('should support error formatting with missing source files', function () {
     var log = cedar();
     var output = '';
     process.stdout.write = function (value) {
@@ -198,5 +175,21 @@ describe('Console', function () {
     log(pretty('[Ok] Hi <(1)>'));
     assert.equal(output, pretty('<@ >Hi <(1)>' + Array(44).join(' ') + '<Ok>\n'));
     process.stdout.write = write;
+  });
+
+  // Run tests that are compatible with both base and console stringify.
+  describe('stringify', function () {
+
+    // Create a base logger that all of the stringify tests can use.
+    var log = cedar();
+
+    // Stringify and un-color to match base logger stringify.
+    var colorlessStringify = function (data) {
+      return log.stringify(data).replace(/\u001b\[\d\dm/g, '');
+    };
+
+    // Run the tests.
+    require('./stringifyTest')(log, colorlessStringify);
+
   });
 });

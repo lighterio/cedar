@@ -1,6 +1,6 @@
 {
   "name": "cedar",
-  "description": "Pretty Node.js logs",
+  "description": "User-friendly logging",
   "keywords": [
     "cedar",
     "tiny",
@@ -12,7 +12,7 @@
     "icons",
     "transport"
   ],
-  "version": "0.0.12",
+  "version": "0.0.13",
   "main": "cedar.js",
   "homepage": "http://github.com/zerious/cedar",
   "repository": "http://github.com/zerious/cedar.git",
@@ -49,8 +49,8 @@
   "devDependencies": {
     "zeriousify": "0.1.5",
     "assert-plus": "0.1.5",
-    "mocha": "1.20.0",
-    "istanbul": "0.2.10",
+    "mocha": "1.20.1",
+    "istanbul": "0.2.11",
     "coveralls": "2.10.0"
   }
 }
