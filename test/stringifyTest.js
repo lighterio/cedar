@@ -7,6 +7,11 @@ module.exports = function (log, stringify) {
     assert.equal(text, 'null');
   });
 
+  it('should handle properties', function () {
+    var text = stringify({n: null});
+    assert.equal(text, '{n: null}');
+  });
+
   it('should handle undefined', function () {
     var o = {};
     var text = stringify(o.a);
