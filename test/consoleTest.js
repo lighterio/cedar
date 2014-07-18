@@ -49,6 +49,24 @@ describe('Console', function () {
     process.stdout.write = write;
   });
 
+  it('should support win32', function () {
+    var originalPlatform = process.platform;
+    process.platform = 'win32';
+    var log = cedar();
+    var prefixes = log.getPrefixes();
+    for (var key in prefixes) {
+      prefixes[key] = '      ' + prefixes[key];
+    }
+    log.setPrefixes(prefixes);
+    log.debug('debug');
+    log.trace('trace');
+    log.log('log');
+    log.info('info');
+    log.warn('warn');
+    log.error('error');
+    process.platform = originalPlatform;
+  });
+
   it('should support log levels', function () {
     var log = cedar();
     var output = null;
