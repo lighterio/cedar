@@ -1,4 +1,3 @@
-var assert = require('assert-plus');
 var cedar = require('../cedar');
 var write = process.stdout.write;
 
@@ -17,7 +16,7 @@ describe('Base', function () {
     log.info('5');
     log.warn('6');
     log.error('7');
-    assert.equal(output, 'LOG: 1\nTRACE: 2\nDEBUG: 3\nLOG: 4\nINFO: 5\nWARN: 6\nERROR: 7\n');
+    is(output, 'LOG: 1\nTRACE: 2\nDEBUG: 3\nLOG: 4\nINFO: 5\nWARN: 6\nERROR: 7\n');
     process.stdout.write = write;
   });
 

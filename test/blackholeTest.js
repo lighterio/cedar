@@ -1,4 +1,3 @@
-var assert = require('assert-plus');
 var cedar = require('../cedar');
 
 describe('Blackhole', function () {

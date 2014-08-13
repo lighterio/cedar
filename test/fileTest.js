@@ -1,5 +1,4 @@
 var fs = require('fs');
-var assert = require('assert-plus');
 var cedar = require('../cedar');
 
 describe('File', function () {

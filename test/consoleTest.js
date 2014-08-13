@@ -1,4 +1,3 @@
-var assert = require('assert-plus');
 var cedar = require('../cedar');
 var write = process.stdout.write;
 var cwd = process.cwd();
@@ -9,18 +8,18 @@ describe('Console', function () {
   var log = cedar();
 
   it('should return a console logger', function () {
-    assert.equal(log.type, 'console');
+    is(log.type, 'console');
     log = cedar('console');
-    assert.equal(log.type, 'console');
+    is(log.type, 'console');
     log = cedar(['console']);
-    assert.equal(log.type, 'console');
+    is(log.type, 'console');
   });
 
   it('should support getPrefixes and setPrefixes', function () {
     var log = cedar();
     log.setPrefixes(0);
     var prefixes = log.getPrefixes();
-    assert.equal(prefixes, 0);
+    is(prefixes, 0);
   });
 
   it('should have all of the expected logging functions', function () {
@@ -65,41 +64,41 @@ describe('Console', function () {
 
     log.setLevel('nothing');
     log.trace('meh');
-    assert.equal(output, null);
+    is(output, null);
 
     log.setLevel('error');
     log.error('error');
     log.warn('warn');
-    assert.equal(output, 'error!\n');
+    is(output, 'error!\n');
 
     log.setLevel('warn');
     log.warn('warn');
     log.info('info');
-    assert.equal(output, 'warn!\n');
+    is(output, 'warn!\n');
 
     log.setLevel('info');
     log.info('info');
     log.log('log');
-    assert.equal(output, 'info!\n');
+    is(output, 'info!\n');
 
     log.setLevel('log');
     log.log('log');
     log.debug('trace');
-    assert.equal(output, 'log!\n');
+    is(output, 'log!\n');
 
     log.setLevel('trace');
     log.trace('trace');
     log.debug('debug');
-    assert.equal(output, 'trace!\n');
+    is(output, 'trace!\n');
 
     log.setLevel('debug');
     log.debug('debug');
-    assert.equal(output, 'debug!\n');
+    is(output, 'debug!\n');
     log.trace('trace');
-    assert.equal(output, 'trace!\n');
+    is(output, 'trace!\n');
 
     log.setLevel('HODOR');
-    assert.equal(output, 'Unknown log level: \"HODOR\".!\n');
+    is(output, 'Unknown log level: \"HODOR\".!\n');
 
     process.stdout.write = write;
   });
@@ -118,7 +117,7 @@ describe('Console', function () {
     }, 'error');
     log(1);
     log.error(2);
-    assert.equal(output, 'L1log\nE2error!\n');
+    is(output, 'L1log\nE2error!\n');
 
     process.stdout.write = write;
   });
@@ -134,7 +133,7 @@ describe('Console', function () {
     catch (e) {
       log.error(e);
     }
-    assert.equal(output.indexOf(cwd), -1);
+    is(output.indexOf(cwd), -1);
     process.stdout.write = write;
   });
 
@@ -170,10 +169,10 @@ describe('Console', function () {
       return text.replace(/@/g, '\u279C');
     }
     log('[Ok] Blah');
-    assert.equal(output, pretty('<@ >Blah' + Array(46).join(' ') + '<Ok>\n'));
+    is(output, pretty('<@ >Blah' + Array(46).join(' ') + '<Ok>\n'));
     output = '';
     log(pretty('[Ok] Hi <(1)>'));
-    assert.equal(output, pretty('<@ >Hi <(1)>' + Array(44).join(' ') + '<Ok>\n'));
+    is(output, pretty('<@ >Hi <(1)>' + Array(44).join(' ') + '<Ok>\n'));
     process.stdout.write = write;
   });
 

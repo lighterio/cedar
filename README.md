@@ -1,10 +1,10 @@
 # Cedar
 
 [![NPM Version](https://badge.fury.io/js/cedar.png)](http://badge.fury.io/js/cedar)
-[![Build Status](https://travis-ci.org/zerious/cedar.png?branch=master)](https://travis-ci.org/zerious/cedar)
-[![Code Coverage](https://coveralls.io/repos/zerious/cedar/badge.png?branch=master)](https://coveralls.io/r/zerious/cedar)
-[![Dependencies](https://david-dm.org/zerious/cedar.png?theme=shields.io)](https://david-dm.org/zerious/cedar)
-[![Support](http://img.shields.io/gittip/zerious.png)](https://www.gittip.com/zerious/)
+[![Build Status](https://travis-ci.org/lighterio/cedar.png?branch=master)](https://travis-ci.org/lighterio/cedar)
+[![Code Coverage](https://coveralls.io/repos/lighterio/cedar/badge.png?branch=master)](https://coveralls.io/r/lighterio/cedar)
+[![Dependencies](https://david-dm.org/lighterio/cedar.png?theme=shields.io)](https://david-dm.org/lighterio/cedar)
+[![Support](http://img.shields.io/gittip/zerious.png)](https://www.gittip.com/lighterio/)
 
 Cedar is a Node.js logging library that is designed to be fast, simple and
 pretty. Its console transport shows color symbols before your log messages.
