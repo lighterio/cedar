@@ -1,10 +1,10 @@
 # Cedar
 
-[![NPM Version](https://badge.fury.io/js/cedar.png)](http://badge.fury.io/js/cedar)
-[![Build Status](https://travis-ci.org/lighterio/cedar.png?branch=master)](https://travis-ci.org/lighterio/cedar)
-[![Code Coverage](https://coveralls.io/repos/lighterio/cedar/badge.png?branch=master)](https://coveralls.io/r/lighterio/cedar)
-[![Dependencies](https://david-dm.org/lighterio/cedar.png?theme=shields.io)](https://david-dm.org/lighterio/cedar)
-[![Support](http://img.shields.io/gittip/zerious.png)](https://www.gittip.com/lighterio/)
+[![NPM Version](https://img.shields.io/npm/v/cedar.svg) ![Downloads](https://img.shields.io/npm/dm/cedar.svg)](https://npmjs.org/package/cedar)
+[![Build Status](https://img.shields.io/travis/lighterio/cedar.svg)](https://travis-ci.org/lighterio/cedar)
+[![Code Coverage](https://img.shields.io/coveralls/lighterio/cedar/master.svg)](https://coveralls.io/r/lighterio/cedar)
+[![Dependencies](https://img.shields.io/david/lighterio/cedar.svg)](https://david-dm.org/lighterio/cedar)
+[![Support](https://img.shields.io/gratipay/Lighter.io.svg)](https://gratipay.com/Lighter.io/)
 
 Cedar is a Node.js logging library that is designed to be fast, simple and
 pretty. Its console transport shows color symbols before your log messages.

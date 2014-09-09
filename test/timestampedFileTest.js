@@ -1,9 +1,9 @@
 var fs = require('fs');
 var cedar = require('../cedar');
 
-describe('Timestamped File', function() {
+describe('Timestamped File', function () {
 
-  it('should log to file', function(done) {
+  it('should log to file', function (done) {
     var log = cedar('timestampedFile');
     log('log');
     log({});
@@ -23,19 +23,19 @@ describe('Timestamped File', function() {
           prefix: 'test-'
         });
         log("test test");
-        setTimeout(function(){
+        setTimeout(function() {
           var fileArray = fs.readdirSync("logs/deleteMeTimestampedTest");
           for (var i = 0, len = fileArray.length; i < len; i++) {
             fs.unlinkSync("logs/deleteMeTimestampedTest/" + fileArray[i]);
           }
           fs.rmdirSync("logs/deleteMeTimestampedTest");
           done();
-        },20)
+        }, 20);
       }, 20);
     }, 100);
   });
 
-  it('should create a new file every minute', function(done) {
+  it('should create a new file every minute', function (done) {
     this.timeout(2 * 60 * 1000);
     var log = cedar('timestampedFile', {
       directory: "logs/deleteMe_minuteTest",
@@ -50,11 +50,12 @@ describe('Timestamped File', function() {
         fs.unlinkSync("logs/deleteMe_minuteTest/" + fileArray[1]);
         fs.unlinkSync("logs/deleteMe_minuteTest/" + fileArray[0]);
         fs.rmdirSync("logs/deleteMe_minuteTest");
-        done()
-      }, 100)
+        done();
+      }, 100);
     }, 60 * 1000);
   });
-  it('should fire a callback on new file', function(done) {
+
+  it('should fire a callback on new file', function (done) {
     this.timeout(2 * 60 * 1000);
     var log = cedar('timestampedFile', {
       onNewFile: function() {
@@ -64,7 +65,7 @@ describe('Timestamped File', function() {
     });
     log.setOnNewFile(function(){
       log("logging from the new file callback 2!");
-    })
+    });
     log('I go in to file1');
     setTimeout(function() {
       log('I go in to file 2');
@@ -85,9 +86,10 @@ describe('Timestamped File', function() {
         fs.unlinkSync("logs/deleteMe_onNewFileTest/" + fileArray[1]);
         fs.unlinkSync("logs/deleteMe_onNewFileTest/" + fileArray[0]);
         fs.rmdirSync("logs/deleteMe_onNewFileTest");
-        done()
+        done();
 
       }, 100);
     }, 60 * 1000);
   });
+
 });
