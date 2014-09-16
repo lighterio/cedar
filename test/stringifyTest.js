@@ -70,6 +70,40 @@ module.exports = function (log, stringify) {
     is(text, "{start: [Date: Mon, 16 Jun 2014 05:37:26 GMT]}");
   });
 
+  it('should show error stack traces', function (done) {
+    try {
+      throw new Error('Hello');
+    }
+    catch (e) {
+      var text = stringify(e);
+      is.in(text, 'stringifyTest.js');
+      done();
+    }
+  });
+
+  it('should succeed with stackless errors', function (done) {
+    try {
+      throw new Error('Hello');
+    }
+    catch (e) {
+      e.stack = null;
+      var text = stringify(e);
+      is.notIn(text, 'stringifyTest.js');
+      done();
+    }
+  });
+
+  it('should handle nested errors', function (done) {
+    try {
+      throw new Error('Hello');
+    }
+    catch (e) {
+      var text = stringify({error: e});
+      is.in(text, 'stringifyTest.js');
+      done();
+    }
+  });
+
   it('should handle objects', function () {
     Object.prototype.testHasOwnProperty = function () {};
     var text = stringify({ok: true, _underscored: 'private-ish'});
