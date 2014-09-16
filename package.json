@@ -12,28 +12,14 @@
     "icons",
     "transport"
   ],
-  "version": "0.0.17",
+  "version": "0.0.18",
   "main": "cedar.js",
-  "homepage": "http://github.com/lighterio/cedar",
-  "repository": "http://github.com/lighterio/cedar.git",
-  "bugs": {
-    "url": "http://github.com/lighterio/cedar/issues"
-  },
-  "author": {
-    "name": "Sam Eubank",
-    "email": "sameubank@gmail.com"
-  },
+  "homepage": "https://github.com/lighterio/cedar",
+  "repository": "https://github.com/lighterio/cedar.git",
+  "bugs": "https://github.com/lighterio/cedar/issues",
+  "author": "Sam Eubank <sameubank@gmail.com>",
   "contributors": [
-    {
-      "name": "Sam Eubank",
-      "email": "sameubank@gmail.com"
-    }
-  ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/lighterio/cedar/blob/master/MIT-LICENSE.md"
-    }
+    "Sam Eubank <sameubank@gmail.com>"
   ],
   "engines": [
     "node >= 0.2.6"
@@ -47,9 +33,10 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "exam": "0.0.5",
-    "zeriousify": "0.1.9",
+    "exam": "^0.0.7",
+    "zeriousify": "^0.1.9",
     "istanbul": "0.2.11",
     "coveralls": "2.10.0"
-  }
+  },
+  "license": "MIT"
 }
