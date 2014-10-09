@@ -1,4 +1,4 @@
---require exam/lib/is
---require exam/lib/mock
+--require exam/transports/is
+--require exam/transports/mock
 --reporter spec
 --ui bdd
