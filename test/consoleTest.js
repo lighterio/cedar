@@ -110,27 +110,27 @@ describe('Console', function () {
     out.value = '';
     log.level = 'log';
     log.log('log');
-    log.debug('trace');
+    log.trace('debug');
     is(out.value, 'log!');
-
-    out.value = '';
-    log.level = 'trace';
-    log.trace('trace');
-    log.debug('debug');
-    is(out.value, 'trace!');
 
     out.value = '';
     log.level = 'debug';
     log.debug('debug');
+    log.trace('trace');
     is(out.value, 'debug!');
 
     out.value = '';
+    log.level = 'trace';
     log.trace('trace');
-    is(out.value, 'trace!');
+    is.in(out.value, 'trace');
+
+    out.value = '';
+    log.debug('debug');
+    is(out.value, 'debug!');
 
     out.value = '';
     log.level = 'HODOR';
-    is(out.value, '[Cedar] Unknown log level: \"HODOR\".!');
+    is(out.value, 'Unknown log level: \"HODOR\".!');
   });
 
   it('should format stack traces', function () {

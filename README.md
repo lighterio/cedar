@@ -14,15 +14,15 @@ Cedar is a Node.js logger, designed to be fast, extensible, and super useful.
 ### Powerful features
 
 * Modifiable logging prefixes, formatters, and stringify functions.
-* Loggers which are functions
+* Loggers which are functions, allowing shorthand calls.
 * A `console` transport with color unicode symbols and helpful code snippets
   inside stack traces.
-* A `file` transport that can roll by day, hour or minute.
-* A `multi` transport, which supports `cluster` by sending worker logs to the
+* A `file` transport that can rotate by day, hour or minute.
+* A `multi` transport, which supports `cluster`, sending worker logs to the
   master process.
 
 
-### Getting started
+### Quick Start
 
 Add `cedar` to your dependencies.
 ```bash
@@ -30,55 +30,61 @@ npm install --save cedar
 ```
 
 Create a logger, and use it.
-```javascript
+```js
 var log = require('cedar')([
   {
-    transport: 'console' // == default
-    level: 'debug' // == default
+    transport: 'console' // Default.
+    level: 'trace' // Default.
   },
   {
     transport: 'file',
     level: 'info',
-    path: 'log/${YYYY}/${MM}/${DD}/${HOST}.log'
+    path: 'log/${YYYY}/${MM}/${DD}/app_${HOST}.log'
   }
 ]);
 
-log('Log a string');
+log('Log a string'); // Shorthand.
 log.debug(['or', 'an', 'array']);
 log.trace({or: 'JSON of course'});
 log.log('and', 'multiple', 'arguments', 'are', 'supported.', true);
-log.info('This is the 1st message that would log to file, based on `level` log messages go to all transports.')
+log.info('This message will also log to file, based on `level`.')
 
+log.trace('This gets formatted as a trace message, with a stack trace');
 log.debug('This gets formatted as a debug message.');
-log.trace('This gets formatted as a trace message.');
 log.log('This gets formatted as a log message.');
 log.info('This gets formatted as an info message.');
 log.warn('This gets formatted as a warning message.', error);
 log.error('This gets formatted as an error message.', error);
-log.alarm('This gets formatted as an alarming message.', error);
+log.alert('This gets formatted as an alerting message.', error);
 ```
 
-## Logger customization
+## Convention & Configuration
+Each Cedar transport has properties with defaults that can be
+overridden using a config object. They also have getters and
+setters, allowing you to change them later.
 
-#### log.format = function callback[, string type]
+For example:
+```js
+// Set the log `level` in a configuration object.
+var log = require('cedar')({level: 'warn'}); // "warn", "error" and "alert".
 
-Customize the message format.
-```javascript
-var log = require('cedar')();
-log.format = function (message, prefix, type {
-  return prefix + message + '!';
-});
+log('log');         // Ignore.
+log.error('error'); // Log "error".
+
+// Assign the `level`, thereby invoking its setter.
+log.level = 'debug';
+
+log('log');         // Log "log".
+log.error('error'); // Log "error".
+log.trace('trace'); // Ignore.
 ```
-
-If you specify the optional `type` parameter, it will only change the formatter
-for that type.
 
 #### log.level `string`
 
-Configures the minimum level of logging that is shown (default: `log`).
-```javascript
+Configures the minimum level of logging that is shown (default: `trace`).
+```js
 var log = require('cedar')();
-log.level = 'trace';
+log.level = 'debug';
 ```
 
 Setting to a level from this list will enable logs of that level and all
@@ -88,45 +94,55 @@ Setting the level to `nothing` will stop all logs.
 #### log.prefixes `object`
 
 Customize prefixes for the color log messages.
-```javascript
+```js
 require('colors');
 
 var log = require('cedar')();
-log.setPrefixes({
-  debug: 'DEBUG '.magenta,
-  trace: 'TRACE '.cyan,
-  log: 'LOG   '.grey,
-  info: 'INFO  '.green,
-  warn: 'WARN  '.yellow,
-  error: 'ERROR '.red
-});
-
-// You can also get the prefixes:
-var prefixes = log.prefixes;
+log.prefixes = {
+  trace: 'TRACE: '.cyan,
+  debug: 'DEBUG: '.magenta,
+  log:   'LOG:   '.grey,
+  info:  'INFO:  '.green,
+  warn:  'WARN:  '.yellow,
+  error: 'ERROR: '.red,
+  alert: 'ALERT: '.red
+};
 ```
 
-#### log.indent
+#### log.space `string`
 
 Configures the spacing that stringify uses.
-```javascript
+```js
 var log = require('cedar')();
 log.space = '  ';
 ```
 The default is two spaces.
 
 
+#### log.format `function`
+
+Customize the message format, given 3 arguments.
+```js
+var log = require('cedar')();
+log.format = function (message, prefix, type) {
+  return prefix + message + ' from log.' + type + '!';
+});
+log.info('Hello'); // "INFO Hello from log.info!"
+```
+
 ## Transports
 
-Cedar currently supports "console" and "file" loggers.
+Cedar currently supports 4 main transports: "base", "console", "file" and
+"multi". Each transport takes an optional configuration object.
 
 ### Base
 
-The base logger writes to a stream, and the other loggers extend it.
-```javascript
+The base transport writes to a stream, and other transports extend it.
+```js
 var fs = require('fs');
 var writeStream = fs.createWriteStream('my.log');
-var logger = require('cedar')('base', {stream: writeStream});
-logger.log('Write this string to a file');
+var base = require('cedar')('base', {stream: writeStream});
+base.log('Write this string to `my.log`');
 ```
 
 ### Console
@@ -134,37 +150,53 @@ logger.log('Write this string to a file');
 The `console` logger writes to `process.stdout` with pretty colors.
 
 Console is the default transport, so the following are equivalent:
-```javascript
+```js
 logger = require('cedar')();
 logger = require('cedar')('color');
 ```
 
 ### File
 
-The `file` logger writes JSON messages to a file.
-The default file path is `logs/cedar.log`.
-```javascript
-var logger = require('cedar')('file', {path: 'logs/cedar.log'});
-logger.log('Write this string to a file');
+The `file` logger writes JSON messages to a file. In addition, it acts as a
+simple event emitter so you can receive notifications when file rotation
+events occur.
+```js
+var file = require('cedar')('file', {
+  path: 'log/app_${YYYY}-${MM}-${DD}_${HH}:${NN}_${HOST}.log'
+});
+file.info('This will go into a file.');
+
+var console = require('cedar')();
+
+file.on('open', function (path) {
+  console.log('Opened "' + path + '" for logging.');
+});
+
+file.on('close', function (path) {
+  console.log('Closed "' + path + '".');
+});
 ```
+
 
 ### Multi
 
-The `multi` logger writes to multiple loggers at once.
+The `multi` logger writes to multiple loggers at once. Its configuration object
+is an array of configurations with transports specified by a `transport`
+property.
 
+```js
+var log = require('cedar')([
+  {transport: 'console'},
+  {transport: 'file', level: 'info', path: 'log/app_${YYYY}-${MM}-${DD}_${HOST}.log'},
+  {transport: 'file', level: 'error', path: 'log/${YYYY}/${MM}/${DD}/error_${HOST}.log'}
+]);
+```
 
 ## Acknowledgements
 
 We would like to thank all of the amazing people who use, support,
 promote, enhance, document, patch, and submit comments & issues.
 Cedar couldn't exist without you.
-
-We depend on [lru-cache](https://www.npmjs.org/package/lru-cache),
-[leveldown](https://www.npmjs.org/package/leveldown) and
-[xxhash](https://www.npmjs.org/package/xxhash), so thanks are due to
-[Isaac Schlueter](https://github.com/isaacs),
-[Rod Vagg](https://github.com/rvagg),
-[C J Silverio](https://github.com/ceejbot), and all of their contributors.
 
 Additionally, huge thanks go to [TUNE](http://www.tune.com) for employing
 and supporting [Cedar](http://lighter.io/cedar) project maintainers,

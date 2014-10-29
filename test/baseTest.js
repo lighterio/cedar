@@ -16,7 +16,7 @@ describe('Base logger', function () {
     log.info(5);
     log.warn(6);
     log.error(7);
-    is(output, 'LOG [1]\nTRACE [2]\nDEBUG [3]\nLOG [4]\nINFO [5]\nWARN [6]\nERROR [7]\n');
+    is.in(output, /LOG \[1\]\nTRACE \[2[\s\S]+\]\nDEBUG \[3\]\nLOG \[4\]\nINFO \[5\]\nWARN \[6\]\nERROR \[7\]\n/);
     process.stdout.write = write;
   });
 

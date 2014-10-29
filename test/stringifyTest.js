@@ -20,7 +20,7 @@ module.exports = function (log, stringify) {
     is(text, "hi");
   });
 
-  if (log.transport == 'color') {
+  if (log.transport == 'console') {
 
     it('should handle properties', function () {
       var text = stringify({n: null});
