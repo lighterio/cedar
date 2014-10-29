@@ -1,34 +1,45 @@
 var cedar = require('../cedar');
 var write = process.stdout.write;
 var cwd = process.cwd();
+var out;
 
 describe('Console', function () {
 
   // Methods which don't set custom properties can use this default logger.
   var log = cedar();
 
-  it('should return a console logger', function () {
-    is(log.type, 'console');
-    log = cedar('console');
-    is(log.type, 'console');
-    log = cedar(['console']);
-    is(log.type, 'console');
+  beforeEach(function () {
+    out = mock.concat();
+    mock(process.stdout, {write: out});
   });
 
-  it('should support getPrefixes and setPrefixes', function () {
+  afterEach(function () {
+    unmock(process.stdout);
+  });
+
+  it('should return a console logger', function () {
+    is(log.transport, 'console');
+    log = cedar('console');
+    is(log.transport, 'console');
+    log = cedar(['console']);
+    is(log[0].transport, 'console');
+  });
+
+  it('should support prefixes', function () {
     var log = cedar();
-    log.setPrefixes(0);
-    var prefixes = log.getPrefixes();
+    log.prefixes = 0;
+    var prefixes = log.prefixes;
     is(prefixes, 0);
   });
 
   it('should have all of the expected logging functions', function () {
     var log = cedar();
-    var prefixes = log.getPrefixes();
-    for (var key in prefixes) {
-      prefixes[key] = '      ' + prefixes[key];
-    }
-    log.setPrefixes(prefixes);
+    var prefixes = log.prefixes;
+    mock(process.stdout, {
+      write: function () {}
+    });
+
+    log.prefixes = prefixes;
     log.debug('debug');
     log.trace('trace');
     log.log('log');
@@ -36,7 +47,6 @@ describe('Console', function () {
     log.warn('warn');
     log.error('error');
 
-    process.stdout.write = function () {};
     log('log');
     log({type: 'json', formatted: 'true'});
     log.debug({});
@@ -45,122 +55,96 @@ describe('Console', function () {
     log.info({});
     log.warn({});
     log.error({});
-    process.stdout.write = write;
+
+    unmock(process.stdout);
   });
 
   it('should support win32', function () {
-    var originalPlatform = process.platform;
-    process.platform = 'win32';
+    mock(process, {
+      platform: 'win32'
+    });
     var log = cedar();
-    var prefixes = log.getPrefixes();
-    for (var key in prefixes) {
-      prefixes[key] = '      ' + prefixes[key];
-    }
-    log.setPrefixes(prefixes);
+    var prefixes = log.prefixes;
+
+    log.prefixes = prefixes;
     log.debug('debug');
     log.trace('trace');
     log.log('log');
     log.info('info');
     log.warn('warn');
     log.error('error');
-    process.platform = originalPlatform;
+    unmock(process);
+    unmock(process.stdout);
   });
 
   it('should support log levels', function () {
     var log = cedar();
-    var output = null;
 
-    process.stdout.write = function (value) {
-      output = value;
+    log.format = function (message) {
+      return message + '!';
     };
 
-    log.setPrefixes({error: '', warn: '', info: '', log: '', debug: '', trace: ''});
-
-    log.setFormat(function (message) {
-      return message + '!';
-    });
-
-    log.setLevel('nothing');
+    out.value = '';
+    log.level = 'nothing';
     log.trace('meh');
-    is(output, null);
+    is(out.value, '');
 
-    log.setLevel('error');
+    out.value = '';
+    log.level = 'error';
     log.error('error');
     log.warn('warn');
-    is(output, 'error!\n');
+    is(out.value, 'error!');
 
-    log.setLevel('warn');
+    out.value = '';
+    log.level = 'warn';
     log.warn('warn');
     log.info('info');
-    is(output, 'warn!\n');
+    is(out.value, 'warn!');
 
-    log.setLevel('info');
+    out.value = '';
+    log.level = 'info';
     log.info('info');
     log.log('log');
-    is(output, 'info!\n');
+    is(out.value, 'info!');
 
-    log.setLevel('log');
+    out.value = '';
+    log.level = 'log';
     log.log('log');
-    log.debug('trace');
-    is(output, 'log!\n');
+    log.trace('debug');
+    is(out.value, 'log!');
 
-    log.setLevel('trace');
-    log.trace('trace');
+    out.value = '';
+    log.level = 'debug';
     log.debug('debug');
-    is(output, 'trace!\n');
-
-    log.setLevel('debug');
-    log.debug('debug');
-    is(output, 'debug!\n');
     log.trace('trace');
-    is(output, 'trace!\n');
+    is(out.value, 'debug!');
 
-    log.setLevel('HODOR');
-    is(output, 'Unknown log level: \"HODOR\".!\n');
+    out.value = '';
+    log.level = 'trace';
+    log.trace('trace');
+    is.in(out.value, 'trace');
 
-    process.stdout.write = write;
-  });
+    out.value = '';
+    log.debug('debug');
+    is(out.value, 'debug!');
 
-  it('should support custom formats', function () {
-    var log = cedar();
-    var output = '';
-    process.stdout.write = function (value) {
-      output += value;
-    };
-    log.setFormat(function (message, type) {
-      return 'L'+ message + type;
-    });
-    log.setFormat(function (message, type) {
-      return 'E' + message + type + '!';
-    }, 'error');
-    log(1);
-    log.error(2);
-    is(output, 'L1log\nE2error!\n');
-
-    process.stdout.write = write;
+    out.value = '';
+    log.level = 'HODOR';
+    is(out.value, 'Unknown log level: \"HODOR\".!');
   });
 
   it('should format stack traces', function () {
-    var output = '';
-    process.stdout.write = function (value) {
-      output += value;
-    };
     try {
       process.omgWtfBbq();
     }
     catch (e) {
       log.error(e);
     }
-    is(output.indexOf(cwd), -1);
-    process.stdout.write = write;
+    is(out.value.indexOf(cwd), -1);
   });
 
   it('should support error formatting with missing source files', function () {
     var log = cedar();
-    var output = '';
-    process.stdout.write = function (value) {
-      output += value;
-    };
     log.before = 12;
     var message = 'Error in X';
     for (var i = 0; i < 15; i++) {
@@ -172,32 +156,25 @@ describe('Console', function () {
       message += '\n    at X (' + cwd + '/cedar.js:1:2)';
     }
     log.warn(message);
-    process.stdout.write = write;
   });
 
   it('should move bracketed names to the end', function () {
-    var log = cedar();
-    var output = '';
-    var space = '                                             ';
-    process.stdout.write = function (value) {
-      output += value;
-    };
     function pretty(text) {
       text = text.replace(/</g, '\u001b[90m').replace(/>/g, '\u001b[39m');
       return text.replace(/@/g, '\u279C');
     }
+    var log = cedar();
     log('[Ok] Blah');
-    is(output, pretty('<@ >Blah' + Array(46).join(' ') + '<Ok>\n'));
-    output = '';
+    is(out.value, pretty('<@ >Blah' + Array(log.bracketStart - 4).join(' ') + '<Ok>\n'));
+    out.value = '';
     log(pretty('[Ok] Hi <(1)>'));
-    is(output, pretty('<@ >Hi <(1)>' + Array(44).join(' ') + '<Ok>\n'));
-    process.stdout.write = write;
+    is(out.value, pretty('<@ >Hi <(1)>' + Array(log.bracketStart - 6).join(' ') + '<Ok>\n'));
   });
 
   // Run tests that are compatible with both base and console stringify.
   describe('stringify', function () {
 
-    // Create a base logger that all of the stringify tests can use.
+    // Create a console logger that all of the stringify tests can use.
     var log = cedar();
 
     // Stringify and un-color to match base logger stringify.

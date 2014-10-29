@@ -2,6 +2,10 @@ var cedar = require('../cedar');
 
 describe('Blackhole', function () {
 
+  beforeEach(function () {
+    var n = 1;
+  });
+
   it('should have all of the expected logging functions', function () {
     var log = cedar('blackhole');
     log('log');
