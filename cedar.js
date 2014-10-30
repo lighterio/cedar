@@ -1,3 +1,5 @@
+require('./lib/common/stringify');
+
 /**
  * Create and return a logger with one or more transports.
  */
