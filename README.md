@@ -88,8 +88,8 @@ log.level = 'debug';
 ```
 
 Setting to a level from this list will enable logs of that level and all
-of the levels after it: `debug`, `trace`, `log`, `info`, `warn`, `error`.
-Setting the level to `nothing` will stop all logs.
+of the levels after it: `debug`, `trace`, `log`, `info`, `warn`, `error`
+and `alert`. Setting the level to `nothing` will stop all logs.
 
 #### log.prefixes `object`
 
