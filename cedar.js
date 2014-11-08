@@ -1,4 +1,5 @@
-require('./lib/common/stringify');
+// Wrap JSON.stringify with a circular-safe function.
+require('./common/json/stringify');
 
 /**
  * Create and return a logger with one or more transports.
