@@ -4,20 +4,9 @@ var fs = require('fs');
 var mock = require('exam/lib/mock');
 var cwd = process.cwd();
 
-/*var preloads = mock.fs.load([
-  './lib/common/emitter.js',
-  './lib/common/mkdirp.js',
-  './lib/common/stringify.js',
-  './lib/transports/base.js',
-  './lib/transports/file.js',
-  './lib/queue-stream.js',
-  './cedar.js'
-]);*/
-
 describe('File', function () {
 
   beforeEach(function () {
-    //mock.fs(preloads);
     mock.time(1412637494591);
     mock.cpu({
       isMaster: true,
@@ -28,7 +17,6 @@ describe('File', function () {
   });
 
   afterEach(function () {
-    //unmock.fs();
     unmock.time();
     unmock.cpu();
   });
