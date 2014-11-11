@@ -12,12 +12,11 @@
  *   deleted if you remove all listeners.
  *
  * @origin lighter-common/common/events/emitter.js
- * @version 0.0.1
+ * @version 0.0.2
  */
 
-var Emitter = module.exports = function () {};
-
-Emitter.prototype = {
+var Type = require('../object/type');
+var Emitter = module.exports = Type.extend({
 
   /**
    * Set the maximum number of listeners that can be.
@@ -144,4 +143,4 @@ Emitter.prototype = {
     return self;
   }
 
-};
+});
