@@ -4,8 +4,8 @@
   "description": "User-friendly logger",
   "dependencies": {},
   "devDependencies": {
-    "exam": "^0.1.5",
-    "zeriousify": "^0.1.10",
+    "exam": "^0.1.6",
+    "zeriousify": "^0.1.12",
     "istanbul": "0.2.11",
     "coveralls": "2.10.0"
   },
