@@ -31,6 +31,7 @@ var Emitter = module.exports = Type.extend({
    * Handle the case of max listeners being exceeded for an event type.
    */
   maxListenersExceeded: function (type) {
+    var self = this;
     var max = self._maxListeners || Emitter.defaultMaxListeners;
     throw new Error('Max ' + max + ' listeners exceeded for "' + type + '".');
   },

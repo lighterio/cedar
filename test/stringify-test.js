@@ -1,4 +1,9 @@
-module.exports = function (log, stringify) {
+module.exports = function (log) {
+
+  var stringify = function (data) {
+    var string = log.stringify(data, undefined, log.space);
+    return string.replace(/\u001b\[\d+m/g, '');
+  };
 
   it('should handle nulls', function () {
     var text = stringify(null);
@@ -47,19 +52,12 @@ module.exports = function (log, stringify) {
 
     it('should handle function properties', function () {
       var text = stringify({f:function(){hi();}});
-      is(text, "{f: [Function]}");
+      is(text, "{f: function (){hi();}}");
     });
 
     it('should handle function properties with names', function () {
       var text = stringify({f:function hello(){hi();}});
-      is(text, "{f: [Function: hello]}");
-    });
-
-    it('should handle tight function declarations', function () {
-      log.space = null;
-      var text = stringify(function(){hi();});
-      is(text, "function(){hi();}");
-      log.space = '  ';
+      is(text, "{f: function hello(){hi();}}");
     });
 
     it('should handle dates', function () {
@@ -78,7 +76,7 @@ module.exports = function (log, stringify) {
       }
       catch (e) {
         var text = stringify(e);
-        is.in(text, 'stringifyTest.js');
+        is.in(text, 'stringify-test.js');
         done();
       }
     });
@@ -90,7 +88,7 @@ module.exports = function (log, stringify) {
       catch (e) {
         e.stack = null;
         var text = stringify(e);
-        is.notIn(text, 'stringifyTest.js');
+        is.notIn(text, 'stringify-test.js');
         done();
       }
     });
@@ -101,7 +99,7 @@ module.exports = function (log, stringify) {
       }
       catch (e) {
         var text = stringify({error: e});
-        is.in(text, 'stringifyTest.js');
+        is.in(text, 'stringify-test.js');
         done();
       }
     });
@@ -117,12 +115,12 @@ module.exports = function (log, stringify) {
       a.b = {};
       a.b.a = a;
       var text = stringify(a);
-      is(text, "{b: {a: [Circular]}}");
+      is(text, "{b: {a: [Circular ^2]}}");
     });
 
     it('should handle arrays', function () {
       var a = [1, 2, 3];
-      var text = stringify(a);
+      var text = stringify(a, 0, log.space);
       is(text, "[1, 2, 3]");
     });
 
@@ -132,14 +130,8 @@ module.exports = function (log, stringify) {
       is(text, "[]");
     });
 
-    it('should handle reserved words', function () {
-      var o = {'do': 'there is no try'};
-      var text = stringify(o);
-      is(text, '{"do": "there is no try"}');
-    });
-
     it('should handle large objects', function () {
-      var text = 'This string will cause stringify to include line breaks.';
+      var text = 'This string will cause stringify to include line breaks because it is longer than the maximum length for one line.';
       var string = stringify({a: text, b: text});
       is(string, '{\n  a: "' + text + '",\n  b: "' + text + '"\n}');
     });

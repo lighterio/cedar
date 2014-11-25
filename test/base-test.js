@@ -27,7 +27,7 @@ describe('Base logger', function () {
     var log = cedar('base');
 
     // Run the tests.
-    require('./stringifyTest')(log, log.stringify);
+    require('./stringify-test')(log, log.stringify);
 
   });
 });
