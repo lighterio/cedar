@@ -6,15 +6,13 @@
  * @version 0.0.1
  */
 
-var scriptify = JSON.scriptify = function (value, stack) {
+var scriptify = module.exports = JSON.scriptify = function (value, stack) {
   var type = typeof value;
   if (type == 'function') {
     return value.toString();
   }
   if (type == 'string') {
-    return '"' + value.replace(/["\t\n\r]/g, function (char) {
-      return char == '"' ? '\\"' : char == '\t' ? '\\t' : char == '\n' ? '\\n' : '';
-    }) + '"';
+    return JSON.stringify(value);
   }
   if (type == 'object' && value) {
     if (value instanceof Date) {

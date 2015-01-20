@@ -7,8 +7,6 @@
 [![Support](https://img.shields.io/gratipay/Lighter.io.svg)](https://gratipay.com/Lighter.io/)
 
 
-## TL;DR
-
 Cedar is a Node.js logger, designed to be fast, extensible, and super useful.
 
 ### Powerful features

@@ -19,7 +19,7 @@ var cedar = module.exports = function (arg, config) {
   config = config || {};
   config.transport = transport;
 
-  return require('./lib/transports/' + transport)(config);
+  return require(__dirname + '/lib/transports/' + transport)(config);
 };
 
 /**
@@ -27,6 +27,6 @@ var cedar = module.exports = function (arg, config) {
  */
 Object.defineProperty(cedar, 'version', {
   get: function () {
-    return require('./package.json').version;
+    return require(__dirname + '/package.json').version;
   }
 });

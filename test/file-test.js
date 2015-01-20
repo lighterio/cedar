@@ -4,22 +4,22 @@ var fs = require('fs');
 var mock = require('exam/lib/mock');
 var cwd = process.cwd();
 
+function mockIt() {
+  mock.time(1412637494591);
+  mock.cpu({
+    isMaster: true,
+    cpus: 1,
+    fork: false,
+    hostname: 'me'
+  });
+}
+
+function unmockIt() {
+  unmock.time();
+  unmock.cpu();
+}
+
 describe('File', function () {
-
-  beforeEach(function () {
-    mock.time(1412637494591);
-    mock.cpu({
-      isMaster: true,
-      cpus: 1,
-      fork: false,
-      hostname: 'me'
-    });
-  });
-
-  afterEach(function () {
-    unmock.time();
-    unmock.cpu();
-  });
 
   it('logs to the default path', function (done) {
     var log = cedar('file');
@@ -52,6 +52,7 @@ describe('File', function () {
   });
 
   it('logs to a pattern path', function (done) {
+    mockIt();
     var pattern = 'log/${YYYY}/${MM}/${DD}/data-${HOST}.log';
     var expectedPath = 'log/2014/10/06/data-me.log';
     var log = cedar('file', {path: pattern});
@@ -64,11 +65,13 @@ describe('File', function () {
       var content = fs.readFileSync(expectedPath);
       is.in(content.toString(), 'PATTERNED!');
       log.close();
+      unmockIt();
       done();
     });
   });
 
   it('rotates by minute', function (done) {
+    mockIt();
     var pattern = 'log/${YYYY}/${MM}/${DD}/data-${HH}:${NN}-${HOST}.log';
     var n = 0;
     var content;
@@ -95,6 +98,7 @@ describe('File', function () {
         is.in(content, 'OPEN2');
         setImmediate(function () {
           log.close();
+          unmockIt();
           done();
         });
       }

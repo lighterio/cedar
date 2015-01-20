@@ -1,4 +1,5 @@
 var cedar = require('../cedar');
+var colors = require('../common/string/colors');
 var write = process.stdout.write;
 var cwd = process.cwd();
 var out;
@@ -28,18 +29,15 @@ describe('Console', function () {
   it('should support prefixes', function () {
     var log = cedar();
     log.prefixes = 0;
-    var prefixes = log.prefixes;
-    is(prefixes, 0);
+    is(log.prefixes, 0);
   });
 
   it('should have all of the expected logging functions', function () {
     var log = cedar();
-    var prefixes = log.prefixes;
     mock(process.stdout, {
       write: function () {}
     });
 
-    log.prefixes = prefixes;
     log.debug('debug');
     log.trace('trace');
     log.log('log');
@@ -64,9 +62,6 @@ describe('Console', function () {
       platform: 'win32'
     });
     var log = cedar();
-    var prefixes = log.prefixes;
-
-    log.prefixes = prefixes;
     log.debug('debug');
     log.trace('trace');
     log.log('log');
@@ -163,7 +158,7 @@ describe('Console', function () {
       text = text.replace(/</g, '\u001b[90m').replace(/>/g, '\u001b[39m');
       return text.replace(/@/g, '\u279C');
     }
-    var log = cedar();
+    var log = cedar('console', {bracketStart: 10});
     log('[Ok] Blah');
     is(out.value, pretty('<@ >Blah' + Array(log.bracketStart - 4).join(' ') + '<Ok>\n'));
     out.value = '';
@@ -177,13 +172,8 @@ describe('Console', function () {
     // Create a console logger that all of the stringify tests can use.
     var log = cedar();
 
-    // Stringify and un-color to match base logger stringify.
-    var colorlessStringify = function (data) {
-      return log.stringify(data).replace(/\u001b\[\d\dm/g, '');
-    };
-
     // Run the tests.
-    require('./stringifyTest')(log, colorlessStringify);
+    require('./stringify-test')(log);
 
   });
 });
