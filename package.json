@@ -1,11 +1,23 @@
 {
   "name": "cedar",
-  "version": "0.0.0",
-  "description": "cedar is a Zerious module",
+  "version": "0.2.0",
+  "description": "User-friendly logger",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "coveralls": "2.11.1",
+    "exam": "^0.2.0",
+    "istanbul": "0.3.0"
+  },
   "keywords": [
-    "cedar"
+    "cedar",
+    "tiny",
+    "console",
+    "log",
+    "logger",
+    "color",
+    "utf-8",
+    "icons",
+    "transport"
   ],
   "main": "cedar.js",
   "engines": {
