@@ -3,6 +3,7 @@
  *
  * @origin lighter-common/common/json/colorize.js
  * @version 0.0.1
+ * @import string/colors
  */
 
 var colors = require('../string/colors');

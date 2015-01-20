@@ -3,9 +3,12 @@
  *
  * @origin lighter-common/common/error/snippet-stack.js
  * @version 0.0.1
+ * @import string/colors
+ * @import fs/shorten-path
  */
 var fs = require('fs');
 var colors = require('../string/colors');
+var shortenPath = require('../fs/shorten-path');
 
 var snippetStack = module.exports = function (stack, options) {
   var arrow = (process.platform == 'win32' ? '\u2192' : '\u279C') + ' ';
@@ -22,7 +25,7 @@ var snippetStack = module.exports = function (stack, options) {
       if (ignore && ignore.test(path)) {
         return match;
       }
-      var shortPath = snippetStack.shortenPath(path);
+      var shortPath = shortenPath(path);
       var message = '\n' + indent +
         colors.gray + 'at ' +
         (name ? colors.base + name + colors.gray : '') + '(' +
@@ -63,29 +66,6 @@ var snippetStack = module.exports = function (stack, options) {
       return message;
     }
   );
-  stack = stack.replace(/(\n +at )(\S+ )?/g, '\n' + indent + 'at ' + colors.base + '$2' + colors.gray);
+  stack = stack.replace(/(\n +at )(\S+ )?/g, '\n' + indent + 'at '.gray + '$2' + colors.gray);
   return colors[color] + stack;
 };
-
-/**
- * Allow paths to be shortened with "./" and "~/" where appropriate.
- * // TODO: Detect when "../" can be used.
- */
-snippetStack.shortenPath = function (path) {
-  var dirs = snippetStack.dirs;
-  for (var i = 0; i < 2; i++) {
-    var dir = dirs[i];
-    if (dir[0] && (path.indexOf(dir[0]) === 0)) {
-      return dir[1] + path.substr(dir[0].length);
-    }
-  }
-  return path;
-};
-
-/**
- * Preload cwd and home, but expose them so they can be changed upon chdir.
- */
-snippetStack.dirs = [
-  [process.cwd(), '.'],
-  [process.env.HOME, '~']
-];

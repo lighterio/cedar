@@ -13,6 +13,7 @@
  *
  * @origin lighter-common/common/events/emitter.js
  * @version 0.0.4
+ * @import object/type
  */
 
 var Type = require('../object/type');
