@@ -4,9 +4,7 @@
   "description": "User-friendly logger",
   "dependencies": {},
   "devDependencies": {
-    "coveralls": "2.11.1",
-    "exam": "^0.2.1",
-    "istanbul": "0.3.0"
+    "exam": "^0.2.2"
   },
   "keywords": [
     "cedar",
@@ -25,9 +23,9 @@
   },
   "scripts": {
     "test": "./node_modules/exam/exam.js",
-    "cover": "istanbul cover ./node_modules/exam/exam.js",
+    "cover": "./node_modules/exam/exam-cover.js",
     "report": "open coverage/lcov-report/index.html",
-    "coveralls": "istanbul cover ./node_modules/exam/exam.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+    "coveralls": "./node_modules/exam/exam-coveralls.js"
   },
   "repository": "https://github.com/lighterio/cedar.git",
   "bugs": "https://github.com/lighterio/cedar/issues",
