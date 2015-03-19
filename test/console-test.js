@@ -6,7 +6,7 @@ var out;
 
 describe('Console', function () {
 
-  // Methods which don't set custom properties can use this default logger.
+  // Methods which don't set custom properties can use this default log.
   var log = cedar();
 
   beforeEach(function () {
@@ -18,7 +18,7 @@ describe('Console', function () {
     unmock(process.stdout);
   });
 
-  it('should return a console logger', function () {
+  it('should return a console log', function () {
     is(log.transport, 'console');
     log = cedar('console');
     is(log.transport, 'console');
@@ -169,7 +169,7 @@ describe('Console', function () {
   // Run tests that are compatible with both base and console stringify.
   describe('stringify', function () {
 
-    // Create a console logger that all of the stringify tests can use.
+    // Create a console log that all of the stringify tests can use.
     var log = cedar();
 
     // Run the tests.

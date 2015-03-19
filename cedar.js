@@ -2,9 +2,9 @@
 require('./common/json/stringify');
 
 /**
- * Create and return a logger with one or more transports.
+ * Create and return a log with one or more transports.
  */
-var cedar = module.exports = function (arg, config) {
+var cedar = module.exports = process.cedar || function (arg, config) {
 
   // The default transport is `console`.
   var transport = arg || 'console';

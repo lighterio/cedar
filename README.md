@@ -7,12 +7,12 @@
 [![Support](https://img.shields.io/gratipay/Lighter.io.svg)](https://gratipay.com/Lighter.io/)
 
 
-Cedar is a Node.js logger, designed to be fast, extensible, and super useful.
+Cedar is a Node.js log, designed to be fast, extensible, and super useful.
 
 ### Powerful features
 
 * Modifiable logging prefixes, formatters, and stringify functions.
-* Loggers which are functions, allowing shorthand calls.
+* Logs which are functions, allowing shorthand calls.
 * A `console` transport with color unicode symbols and helpful code snippets
   inside stack traces.
 * A `file` transport that can rotate by day, hour or minute.
@@ -27,7 +27,7 @@ Add `cedar` to your dependencies.
 npm install --save cedar
 ```
 
-Create a logger, and use it.
+Create a log, and use it.
 ```js
 var log = require('cedar')([
   {
@@ -53,7 +53,7 @@ log.log('This gets formatted as a log message.');
 log.info('This gets formatted as an info message.');
 log.warn('This gets formatted as a warning message.', error);
 log.error('This gets formatted as an error message.', error);
-log.alert('This gets formatted as an alerting message.', error);
+log.fatal('This gets formatted as a fatal error message.', error);
 ```
 
 ## Convention & Configuration
@@ -64,7 +64,7 @@ setters, allowing you to change them later.
 For example:
 ```js
 // Set the log `level` in a configuration object.
-var log = require('cedar')({level: 'warn'}); // "warn", "error" and "alert".
+var log = require('cedar')({level: 'warn'}); // "warn", "error" and "fatal".
 
 log('log');         // Ignore.
 log.error('error'); // Log "error".
@@ -87,7 +87,7 @@ log.level = 'debug';
 
 Setting to a level from this list will enable logs of that level and all
 of the levels after it: `debug`, `trace`, `log`, `info`, `warn`, `error`
-and `alert`. Setting the level to `nothing` will stop all logs.
+and `fatal`. Setting the level to `nothing` will stop all logs.
 
 #### log.prefixes `object`
 
@@ -103,7 +103,7 @@ log.prefixes = {
   info:  'INFO:  '.green,
   warn:  'WARN:  '.yellow,
   error: 'ERROR: '.red,
-  alert: 'ALERT: '.red
+  fatal: 'FATAL: '.red
 };
 ```
 
@@ -145,17 +145,17 @@ base.log('Write this string to `my.log`');
 
 ### Console
 
-The `console` logger writes to `process.stdout` with pretty colors.
+The `console` log writes to `process.stdout` with pretty colors.
 
 Console is the default transport, so the following are equivalent:
 ```js
-logger = require('cedar')();
-logger = require('cedar')('color');
+log = require('cedar')();
+log = require('cedar')('color');
 ```
 
 ### File
 
-The `file` logger writes JSON messages to a file. In addition, it acts as a
+The `file` log writes JSON messages to a file. In addition, it acts as a
 simple event emitter so you can receive notifications when file rotation
 events occur.
 ```js
@@ -178,7 +178,7 @@ file.on('close', function (path) {
 
 ### Multi
 
-The `multi` logger writes to multiple loggers at once. Its configuration object
+The `multi` log writes to multiple logs at once. Its configuration object
 is an array of configurations with transports specified by a `transport`
 property.
 

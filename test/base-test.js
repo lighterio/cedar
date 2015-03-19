@@ -1,7 +1,7 @@
 var cedar = require('../cedar');
 var write = process.stdout.write;
 
-describe('Base logger', function () {
+describe('Base log', function () {
 
   it('should have all of the expected logging functions', function () {
     var log = cedar('base');
@@ -23,7 +23,7 @@ describe('Base logger', function () {
   // Run tests that are compatible with both stream and color stringify.
   describe('stringify', function () {
 
-    // Create a stream logger that all of the stringify tests can use.
+    // Create a stream log that all of the stringify tests can use.
     var log = cedar('base');
 
     // Run the tests.

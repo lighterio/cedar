@@ -17,10 +17,10 @@ describe('Multi', function () {
       {transport: 'base', format: say, stream: mockStream()}
     ]);
 
-    is(log.loggers.length, 2);
-    is(log[0], log.loggers[0]);
+    is(log.logs.length, 2);
+    is(log[0], log.logs[0]);
     is(log[0].transport, 'console');
-    is(log[1], log.loggers[1]);
+    is(log[1], log.logs[1]);
     is(log[1].transport, 'base');
 
     log(1);
