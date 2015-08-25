@@ -4,7 +4,7 @@
   "description": "User-friendly logger",
   "dependencies": {},
   "devDependencies": {
-    "exam": "^1.0.0"
+    "exam": "git+https://github.com/zerious/exam.git"
   },
   "keywords": [
     "cedar",
