@@ -1,10 +1,10 @@
 {
   "name": "cedar",
-  "version": "0.3.1",
-  "description": "User-friendly logger",
+  "version": "0.3.2",
+  "description": "User-friendly logger.",
   "dependencies": {},
   "devDependencies": {
-    "exam": ">=0.3.2"
+    "exam": ">=1.2.3 <2"
   },
   "keywords": [
     "cedar",
@@ -19,13 +19,14 @@
   ],
   "main": "cedar.js",
   "engines": {
-    "node": ">=0.2.6"
+    "node": ">=0.8.28"
   },
   "scripts": {
     "test": "./node_modules/exam/exam.js",
     "cover": "./node_modules/exam/exam-cover.js",
     "report": "open coverage/lcov-report/index.html",
-    "coveralls": "./node_modules/exam/exam-coveralls.js"
+    "coveralls": "./node_modules/exam/exam-coveralls.js",
+    "bench": "./node_modules/exam/exam.js test/bench"
   },
   "repository": "https://github.com/lighterio/cedar.git",
   "bugs": "https://github.com/lighterio/cedar/issues",
@@ -34,5 +35,5 @@
   "contributors": [
     "Sam Eubank <sameubank@gmail.com>"
   ],
-  "license": "MIT"
+  "license": "ISC"
 }

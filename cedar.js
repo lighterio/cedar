@@ -21,12 +21,3 @@ var cedar = module.exports = process.cedar || function (arg, config) {
 
   return require(__dirname + '/lib/transports/' + transport)(config)
 }
-
-/**
- * Expose the Cedar version via package.json lazy loading.
- */
-Object.defineProperty(cedar, 'version', {
-  get: function () {
-    return require(__dirname + '/package.json').version
-  }
-})

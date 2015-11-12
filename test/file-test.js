@@ -78,7 +78,7 @@ describe('File', function () {
     var log = cedar('file', {path: pattern})
     log.on('open', function (path) {
       log.info('OPEN' + (++n))
-      setImmediate(function () {
+      setTimeout(function () {
         if (n === 1) {
           is(path, 'log/2014/10/06/data-23:18-me.log')
           mock.time.add(6e4)
@@ -86,7 +86,7 @@ describe('File', function () {
           is(path, 'log/2014/10/06/data-23:19-me.log')
           mock.time.add(6e4)
         }
-      })
+      }, 0)
     })
     log.on('close', function (path) {
       if (n === 2) {
@@ -95,11 +95,11 @@ describe('File', function () {
         is.in(content, 'OPEN1')
         content = '' + fs.readFileSync('log/2014/10/06/data-23:19-me.log')
         is.in(content, 'OPEN2')
-        setImmediate(function () {
+        setTimeout(function () {
           log.close()
           unmockIt()
           done()
-        })
+        }, 0)
       }
     })
     log('START')
