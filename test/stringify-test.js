@@ -57,7 +57,7 @@ module.exports = function (log) {
 
     it('should handle function properties with names', function () {
       var text = stringify({f:function hello (){hi();}})
-      is(text, "{f: function hello (){hi();}}")
+      is(text, "{f: function hello(){hi();}}")
     })
 
     it('should handle dates', function () {
