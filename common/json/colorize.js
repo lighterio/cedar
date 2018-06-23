@@ -69,7 +69,7 @@ JSON.colorize = module.exports = function (data, stack, space, indent, maxWidth,
           })
         } else {
           for (var key in data) {
-            if (data.hasOwnProperty(key)) {
+            if (typeof data.hasOwnProperty !== 'function' || data.hasOwnProperty(key)) {
               var value = data[key]
               if (/[^$\w\d]/.test(key)) {
                 key = '"' + key + '"'
