@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/npm/v/cedar.svg)](//www.npmjs.com/package/cedar)
 [![Downloads](https://img.shields.io/npm/dm/cedar.svg)](//www.npmjs.com/package/cedar)
 [![Build](https://img.shields.io/travis/lighterio/cedar.svg)](//travis-ci.org/lighterio/cedar)
-[![Coverage](https://img.shields.io/coveralls/lighterio/cedar/master.svg)](//coveralls.io/r/lighterio/cedar)
+[![Coverage](https://img.shields.io/codecov/c/github/lighterio/cedar/master.svg)](//codecov.io/gh/lighterio/cedar)
 [![Style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](//www.npmjs.com/package/standard)
 
 

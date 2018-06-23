@@ -56,7 +56,3 @@ experience.
 We would like to thank all of the amazing people who use, support,
 promote, enhance, document, patch, and submit comments & issues.
 Cedar couldn't exist without you.
-
-Additionally, huge thanks go to [eBay](http://www.ebay.com) for employing
-and supporting [Cedar](http://lighter.io/cedar) project maintainers,
-and for being an epically awesome place to work (and play).

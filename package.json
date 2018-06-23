@@ -4,7 +4,7 @@
   "description": "User-friendly logger.",
   "dependencies": {},
   "devDependencies": {
-    "exam": ">=1.2.2 <2"
+    "exam": "2.1.1"
   },
   "keywords": [
     "cedar",
@@ -25,7 +25,6 @@
     "test": "./node_modules/exam/exam.js",
     "cover": "./node_modules/exam/exam-cover.js",
     "report": "open coverage/lcov-report/index.html",
-    "coveralls": "./node_modules/exam/exam-coveralls.js",
     "bench": "./node_modules/exam/exam.js test/bench"
   },
   "repository": "https://github.com/lighterio/cedar.git",
@@ -35,5 +34,5 @@
   "contributors": [
     "Sam Eubank <sameubank@gmail.com>"
   ],
-  "license": "ISC"
+  "license": "MIT"
 }

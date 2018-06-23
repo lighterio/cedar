@@ -16,5 +16,6 @@ coverage
 log
 logs
 node_modules
+package-lock.json
 pids
 results
