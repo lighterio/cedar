@@ -60,7 +60,7 @@ var snippetStack = module.exports = function (stack, options) {
           }
           var n = '' + i
           n = Array(numberLength - n.length + 1).join(' ') + n
-          message += '\n' + blockIndent + n + pipe + line.replace('\t', '  ') + colors.gray
+          message += '\n' + blockIndent + n + pipe + line.replace('\t', '  ').substr(0, 75) + colors.gray
         }
         lead *= decay
         trail *= decay

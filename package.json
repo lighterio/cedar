@@ -1,6 +1,6 @@
 {
   "name": "cedar",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "User-friendly logger.",
   "dependencies": {},
   "devDependencies": {
